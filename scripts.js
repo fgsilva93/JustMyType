@@ -27,7 +27,7 @@ $(document).keyup(function (shift) {
 
 $(document).keypress(function (e) {
     let $keyButton = $('#' + e.keyCode);
-    ($keyButton).css('background-color', 'yellow');
+    ($keyButton).css('background-color', 'royalBlue');
     $(document).keyup(function () {
         ($keyButton).css('background-color', 'whitesmoke');
     });
@@ -41,5 +41,5 @@ let letter = typing.substring(array, array + 1); //extrect from the array
 
 //it dislay a sentence from the array of sentences from the 
 $('#sentence').append(typing); 
-//$('#traget-letter').text(letter);
+$('#traget-letter').text(letter);
 
