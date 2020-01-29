@@ -34,15 +34,12 @@ $(document).keypress(function (e) {
 });
 
 let sentences = ['ten ate neite ate nee enet ite ate inet ent eate', 'Too ato too nOt enot one totA not anot tOO aNot', 'oat itain oat tain nate eate tea anne inant nean', 'itant eate anot eat nato inate eat anot tain eat', 'nee ene ate ite tent tiet ent ine ene ete ene ate'];
-let letterPlace = 0; //a counter
-let typing = sentences[i]; 
-let sentences = typing.substring(letterPlace, lettterPlace++); 
 
-let timerOn = false;
-let startDate;
-let startTime;
+let array = 0; // a counter
+let typing = sentences[array]; 
+let letter = typing.substring(array, array + 1); //extrect from the array
 
-
-$("#sentence").text(writing);
-$("#target-letter").text(letter);
+//it dislay a sentence from the array of sentences from the 
+$('#sentence').append(typing); 
+//$('#traget-letter').text(letter);
 
