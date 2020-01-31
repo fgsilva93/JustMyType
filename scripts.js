@@ -42,63 +42,72 @@ let sentences = ['ten ate neite ate nee enet ite ate inet ent eate',
 
 let arrayCount = 0; // a counter for the array of the varible setentences 
 let letterCount = 0; // a counter for the letters in a sentence in the array 
-let currentSentence = sentences[arrayCount]; 
-let currentLetter = currentSentence[letterCount];
-//let letter = currentSentence.substring(letterCount, letterCount + 1);
+let currentSentence = sentences[arrayCount];
+//let currentLetter = currentSentence[letterCount]
+let currentLetter = currentSentence.substring(letterCount, letterCount + 1);
 
-$('#sentence').append(currentSentence); //it dislay a sentence from the array of sentences to the document
-$('#target-letter').append(currentLetter); // it displays the letter of the setences in the array to the document
+$('#sentence').text(currentSentence); //it dislay a sentence from the array of sentences to the document
+$('#target-letter').text(currentLetter); // it displays the letter of the setences in the array to the document
 
-$(document).keypress(function(e) {
-    if(currentSentence.charCodeAt(letterCount) === e.keyCode) { 
+//let letter = currentLetter.substring(letterCount, letterCount + 1);
+let timer = false;
+let startDate;
+let startTime;
+let error = 0;
+$(document).keypress(function (e) {
+
+    if (currentSentence.charCodeAt(letterCount) === e.keyCode) {
         $('#feedback').append('<span class = "glyphicon glyphicon-ok"></span>');
-    }
-    else {
+        $('#yellow-block').css('left', '+=17.5px'); // moves the highlight to the right when a key is press
+        letterCount++;
+        currentLetter = currentSentence.substring(letterCount, letterCount + 1);
+        $('#target-letter').text(currentLetter);
+
+        if (timer === false) {
+            startDate = new Date();
+            startTime = start.getTime();
+            timer = true;
+        }
+
+        if (letterCount === currentSentence.length) {
+            arrayCount++; // moves to the next sentence in the array
+
+            if (arrayCount === sentences.length) { // when you reach the end of the sentence array 
+                let endDate = new Date();
+                let endTime = endDate.getTime();
+                let minutes = (endTime - startTime) / 60000
+                let wpm = Math.round(54 / minutes - 2 * error);
+                $('#feedback').append(`You got ${wpm}, Nice job!`);
+
+                if ($('#feedback').text() == (`You got ${wpm}, Nice job!`)) {
+                    setTimeout(restart, 5000)
+                    // call on the function playagian
+                }
+                // function that ask if you want to play again?
+                function restart() {
+                    $('#feedback').text('Do you want to play again?')
+                    $('#target-letter').append('<button class="btn btn-success" id="yes">Si</button>')
+                    $('#target-letter').append('<button class="btn btn-success" id="no">No</button>')
+                    $('#yes').click(function () {
+                        location.reload();
+                    })
+                    $('#no').click(function () {
+                        $('#target-letter').text('Thanks for playing i guess!')
+                    })
+                }
+            }
+            // use for the next sentence in the array of sentences
+            else {
+                currentSentence = sentences[arrayCount];
+                $('#sentence').text(currentSentence);
+                letterCount = 0;
+                currentLetter = currentSentence.substring(letterCount, letterCount + 1);
+                $('#target-letter').text(currentSentence);
+                $('#yellow-block').css('left', '17.5px');
+                $('#feedback').text(''); 
+            } 
+        }
+    } else {
         $('#feedback').append('<span class = "glyphicon glyphicon-remove"></span>');
     }
-    $('#yellow-block').css('left', '+=17.5px'); // moves the highlight to the right when a key is press
-    letterCount++; 
-
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*variables for th timer 
-let date;
-let time;
-
-$(document).keypress(function (e) {
-    //starts a timer?
-    let timer = false;
-    if (timer === false) {
-        date = new Date(); // makes a new date object with the current date and time
-        time = date.getTime(); // returns a number value in milliseconds since 1970/01/01
-        //timer = true;
-    }
-
-    if (e.keyCode === currentSentence.charCodeAt(letterCount)) {
-        //let right = $('<span class="glyphicon glyphicon-ok"></span>')
-        //$('#feedback').append(right); 
-        //$('#yellow-block').css('left', '+=17.5px')
-        //letterCount++;
-        letter;
-        $('#target-letter').append(letter);
-    }
-})*/
