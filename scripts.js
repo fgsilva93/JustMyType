@@ -48,12 +48,12 @@ let currentLetter = currentSentence.substring(letterCount, letterCount + 1);
 
 $('#sentence').text(currentSentence); //it dislay a sentence from the array of sentences to the document
 $('#target-letter').text(currentLetter); // it displays the letter of the setences in the array to the document
-
-//let letter = currentLetter.substring(letterCount, letterCount + 1);
+ 
+//variables for the timer and resetting of the game.
 let timer = false;
 let startDate;
 let startTime;
-let error = 0;
+
 $(document).keypress(function (e) {
 
     if (currentSentence.charCodeAt(letterCount) === e.keyCode) {
@@ -65,7 +65,7 @@ $(document).keypress(function (e) {
 
         if (timer === false) {
             startDate = new Date();
-            startTime = start.getTime();
+            startTime = startDate.getTime();
             timer = true;
         }
 
@@ -99,12 +99,12 @@ $(document).keypress(function (e) {
             // use for the next sentence in the array of sentences
             else {
                 currentSentence = sentences[arrayCount];
-                $('#sentence').text(currentSentence);
+                $('#sentence').text(currentSentence); // makes the next sentence appear after the prevoius one 
                 letterCount = 0;
-                currentLetter = currentSentence.substring(letterCount, letterCount + 1);
+                currentLetter = currentSentence.substring(letterCount, letterCount + 1); // without thi, in the last sentence it wouldn't act right
                 $('#target-letter').text(currentSentence);
-                $('#yellow-block').css('left', '17.5px');
-                $('#feedback').text(''); 
+                $('#yellow-block').css('left', '17.5px'); // move the highlighter
+                $('#feedback').text(''); // use for the check and x marks to refresh at the end of a sentence?
             } 
         }
     } else {
