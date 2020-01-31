@@ -48,13 +48,20 @@ let currentLetter = currentSentence.substring(letterCount, letterCount + 1);
 
 $('#sentence').text(currentSentence); //it dislay a sentence from the array of sentences to the document
 $('#target-letter').text(currentLetter); // it displays the letter of the setences in the array to the document
- 
+
 //variables for the timer and resetting of the game.
 let timer = false;
 let startDate;
 let startTime;
-
+let numberOfMistakes = 0;
+let errors = 0;
 $(document).keypress(function (e) {
+
+    if (timer === false) {
+        startDate = new Date();
+        startTime = startDate.getTime();
+        timer = true;
+    }
 
     if (currentSentence.charCodeAt(letterCount) === e.keyCode) {
         $('#feedback').append('<span class = "glyphicon glyphicon-ok"></span>');
@@ -63,39 +70,32 @@ $(document).keypress(function (e) {
         currentLetter = currentSentence.substring(letterCount, letterCount + 1);
         $('#target-letter').text(currentLetter);
 
-        if (timer === false) {
-            startDate = new Date();
-            startTime = startDate.getTime();
-            timer = true;
-        }
-
         if (letterCount === currentSentence.length) {
             arrayCount++; // moves to the next sentence in the array
 
-            if (arrayCount === sentences.length) { // when you reach the end of the sentence array 
+            if (arrayCount === sentences.length) {
                 let endDate = new Date();
                 let endTime = endDate.getTime();
                 let minutes = (endTime - startTime) / 60000
-                let wpm = Math.round(54 / minutes - 2 * error);
-                $('#feedback').append(`You got ${wpm}, Nice job!`);
-
-                if ($('#feedback').text() == (`You got ${wpm}, Nice job!`)) {
-                    setTimeout(restart, 5000)
-                    // call on the function playagian
-                }
-                // function that ask if you want to play again?
-                function restart() {
-                    $('#feedback').text('Do you want to play again?')
-                    $('#target-letter').append('<button class="btn btn-success" id="yes">Si</button>')
-                    $('#target-letter').append('<button class="btn btn-success" id="no">No</button>')
-                    $('#yes').click(function () {
-                        location.reload();
-                    })
-                    $('#no').click(function () {
-                        $('#target-letter').text('Thanks for playing i guess!')
-                    })
+                wpm = Math.round(54 / minutes - 2 * errors);
+                $('#feedback').append(`You got ${wpm}, Nice!`)
+                if ($('#feedback').text() == (`You got ${wpm}, Nice!`)) {
+                    setTimeout(playAgain, 5000)
+                    // Ask if they want to play again
+                    function playAgain() {
+                        $('#feedback').text('Do you want to play again?')
+                        $('#target-letter').append('<button class="btn btn-success" id="yes">Yes</button>')
+                        $('#target-letter').append('<button class="btn btn-success" id="no">No</button>')
+                        $('#yes').click(function () {
+                            location.reload();
+                        })
+                        $('#no').click(function () {
+                            $('#target-letter').text('Thanks for playing!')
+                        })
+                    }
                 }
             }
+
             // use for the next sentence in the array of sentences
             else {
                 currentSentence = sentences[arrayCount];
@@ -105,7 +105,7 @@ $(document).keypress(function (e) {
                 $('#target-letter').text(currentSentence);
                 $('#yellow-block').css('left', '17.5px'); // move the highlighter
                 $('#feedback').text(''); // use for the check and x marks to refresh at the end of a sentence?
-            } 
+            }
         }
     } else {
         $('#feedback').append('<span class = "glyphicon glyphicon-remove"></span>');
