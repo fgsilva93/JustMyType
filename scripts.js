@@ -53,8 +53,9 @@ $('#target-letter').text(currentLetter); // it displays the letter of the setenc
 let timer = false;
 let startDate;
 let startTime;
-let numberOfMistakes = 0;
+//let numberOfMistakes = 0;
 let errors = 0;
+
 $(document).keypress(function (e) {
 
     if (timer === false) {
@@ -78,36 +79,35 @@ $(document).keypress(function (e) {
                 let endTime = endDate.getTime();
                 let minutes = (endTime - startTime) / 60000
                 wpm = Math.round(54 / minutes - 2 * errors);
-                $('#feedback').append(`You got ${wpm}, Nice!`)
-                if ($('#feedback').text() == (`You got ${wpm}, Nice!`)) {
-                    setTimeout(playAgain, 5000)
+                $('#feedback').append('You got' + wpm + 'Nice!')
+                if ($('#feedback').text() == ('You got' + wpm + 'Nice!')) {
+                    setTimeout(restart, 5000)
                     // Ask if they want to play again
-                    function playAgain() {
+                    function restart() {
                         $('#feedback').text('Do you want to play again?')
-                        $('#target-letter').append('<button class="btn btn-success" id="yes">Yes</button>')
+                        $('#target-letter').append('<button class="btn btn-success" id="yes">Si</button>')
                         $('#target-letter').append('<button class="btn btn-success" id="no">No</button>')
                         $('#yes').click(function () {
                             location.reload();
                         })
                         $('#no').click(function () {
-                            $('#target-letter').text('Thanks for playing!')
+                            $('#target-letter').text('Thanks for playing i guess!')
                         })
                     }
                 }
             }
-
-            // use for the next sentence in the array of sentences
             else {
-                currentSentence = sentences[arrayCount];
-                $('#sentence').text(currentSentence); // makes the next sentence appear after the prevoius one 
+                currentSentence = sentences[arrayCount]; // the new sentence in the document; 
+                $('#sentence').text(currentSentence); // makes it appear in the document
                 letterCount = 0;
-                currentLetter = currentSentence.substring(letterCount, letterCount + 1); // without thi, in the last sentence it wouldn't act right
-                $('#target-letter').text(currentSentence);
-                $('#yellow-block').css('left', '17.5px'); // move the highlighter
-                $('#feedback').text(''); // use for the check and x marks to refresh at the end of a sentence?
+                currentLetter = currentSentence.substring(letterCount, letterCount + 1); // without this, in the last sentence it wouldn't act right
+                $('#yellow-block').css('left', '17.5px'); // it appears in the same locaton where it started. 
+                $('#feedback').text(''); // use for the check and x marks to refresh at the end of a sentence? 
             }
         }
-    } else {
+    } 
+    else {
         $('#feedback').append('<span class = "glyphicon glyphicon-remove"></span>');
+        errors;
     }
 })
